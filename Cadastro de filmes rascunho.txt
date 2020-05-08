@@ -1,0 +1,14 @@
+-------Filme-------
+id serial,
+nome varchar(255) not null,
+direcao varchar(255) not null,
+elenco text not null,
+sinopse text not null,
+media_avaliacao numeric(6) default 0.0
+-----END-FILME-----
+
+-----Avaliacao-----
+id serial,
+valor numeric(6),
+data date
+---END-AVALIACAO---
