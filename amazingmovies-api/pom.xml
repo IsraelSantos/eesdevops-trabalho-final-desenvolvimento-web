@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.uece.eesdevops</groupId>
-	<artifactId>amazingmovies</artifactId>
+	<artifactId>amazingmovies-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>amazingmovies</name>
+	<name>amazingmovies-api</name>
 	<description>Trabalho final da disciplina de Desenvolvimento Web da Especializacao em Engenharia de Software com Enfase em DevOps (turma 2)</description>
 
 	<properties>
