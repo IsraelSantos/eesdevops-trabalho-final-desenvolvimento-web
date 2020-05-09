@@ -15,7 +15,7 @@
 	<description>Trabalho final da disciplina de Desenvolvimento Web da Especializacao em Engenharia de Software com Enfase em DevOps (turma 2)</description>
 
 	<properties>
-		<java.version>14</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencies>
@@ -30,7 +30,10 @@
 		</dependency>
 		
 		-->
-
+		<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
