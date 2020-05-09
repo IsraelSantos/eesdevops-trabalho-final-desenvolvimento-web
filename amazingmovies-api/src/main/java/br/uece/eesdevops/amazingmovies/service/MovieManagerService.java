@@ -1,5 +1,6 @@
 package br.uece.eesdevops.amazingmovies.service;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,8 +11,13 @@ import br.uece.eesdevops.amazingmovies.repository.EvaluationRepository;
 import br.uece.eesdevops.amazingmovies.repository.MovieRepository;
 
 @Service
-public class MovieManagerService {
+public class MovieManagerService implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1835642354880479518L;
+	
 	MovieRepository movieRepository;
 	EvaluationRepository evaluationRepository;
 
