@@ -26,6 +26,9 @@ public class Movie implements Serializable{
     @Column(name = "direction", nullable = false)
     private String direction;
     
+    @Column(name = "genre", nullable = false)
+    private String genre;
+    
     @Column(name = "cast_m", nullable = false, columnDefinition="TEXT")
     private String cast;
     
@@ -81,6 +84,14 @@ public class Movie implements Serializable{
 
 	public void setAverageEvaluation(Double averageEvaluation) {
 		this.averageEvaluation = averageEvaluation;
+	}
+
+	public String getGenre() {
+		return genre;
+	}
+
+	public void setGenre(String genre) {
+		this.genre = genre;
 	}
 
 }

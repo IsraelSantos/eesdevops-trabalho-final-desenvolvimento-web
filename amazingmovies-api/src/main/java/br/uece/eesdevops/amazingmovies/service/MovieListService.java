@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.uece.eesdevops.amazingmovies.entity.Movie;
@@ -28,11 +28,11 @@ public class MovieListService implements Serializable{
 		this.movieRepository = movieRepository;
 	}
 	
-	public Page<Movie> execute(PageRequest pageRequest) throws RuntimeException {
+	public Page<Movie> execute(Pageable pageable) throws RuntimeException {
 
 		try {
 
-			Page<Movie> movies = movieRepository.findAll(pageRequest);
+			Page<Movie> movies = movieRepository.findAll(pageable);
 			
 			return movies;
 
