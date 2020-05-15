@@ -12,3 +12,6 @@ id serial,
 valor numeric(6),
 data date
 ---END-AVALIACAO---
+
+ano do lancamento
+produtora
