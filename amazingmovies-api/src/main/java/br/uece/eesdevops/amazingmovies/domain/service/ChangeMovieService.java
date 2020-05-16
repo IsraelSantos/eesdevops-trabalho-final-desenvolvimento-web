@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.uece.eesdevops.amazingmovies.domain.entity.Movie;
 import br.uece.eesdevops.amazingmovies.domain.exception.ConflictMovieException;
 import br.uece.eesdevops.amazingmovies.domain.exception.InternalServerErrorException;
+import br.uece.eesdevops.amazingmovies.domain.exception.NotFoundException;
 import br.uece.eesdevops.amazingmovies.repository.MovieRepository;
 
 @Service
@@ -38,6 +39,10 @@ public class ChangeMovieService implements Serializable{
 			Optional<List<Movie>> list;
 			
 			if (movie.getId() != null) {
+				Optional<Movie> tMovie = movieRepository.findById(movie.getId());
+				if (!tMovie.isPresent()) {
+					throw new NotFoundException(Movie.class, movie.getId());
+				}
 				list = movieRepository.findByNameAndIdIsNot(movie.getName(), movie.getId());
 			}else {
 				list = movieRepository.findByName(movie.getName());
@@ -54,6 +59,8 @@ public class ChangeMovieService implements Serializable{
 			
 			return movieRepository.save(movie);
 
+		}catch (NotFoundException e) {
+			throw e;
 		}catch (ConflictMovieException e) {
 			throw e;
 		}catch (Exception e) {

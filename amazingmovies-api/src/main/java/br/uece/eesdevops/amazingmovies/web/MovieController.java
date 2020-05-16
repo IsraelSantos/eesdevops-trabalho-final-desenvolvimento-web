@@ -8,7 +8,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,7 @@ import br.uece.eesdevops.amazingmovies.domain.entity.Movie;
 import br.uece.eesdevops.amazingmovies.domain.exception.InternalServerErrorException;
 import br.uece.eesdevops.amazingmovies.domain.exception.NotFoundException;
 import br.uece.eesdevops.amazingmovies.domain.service.ChangeMovieService;
+import br.uece.eesdevops.amazingmovies.domain.service.RemoveMovieService;
 import br.uece.eesdevops.amazingmovies.repository.MovieRepository;
 import br.uece.eesdevops.amazingmovies.web.entity.MovieDTO;
 
@@ -35,14 +38,17 @@ public class MovieController implements Serializable{
 	
 	private MovieRepository movieRepository;
 	private ChangeMovieService movieSaveService;
+	private RemoveMovieService removeMovieService;
 	
 	@Autowired
 	MovieController(
 				MovieRepository movieRepository,
-				ChangeMovieService movieSaveService
+				ChangeMovieService movieSaveService,
+				RemoveMovieService removeMovieService
 			){
 		this.movieRepository = movieRepository;
 		this.movieSaveService = movieSaveService;
+		this.removeMovieService = removeMovieService;
 	}
     
 	//Para setar página e comprimento na chamada: http://localhost:8081/movies/list?page=0&size=5
@@ -93,6 +99,12 @@ public class MovieController implements Serializable{
     	entity.setId(id);
         Movie res = movieSaveService.execute(entity);
         return ResponseEntity.ok(res);
+    }
+    
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> delete(@PathVariable Long id) {
+    	removeMovieService.execute(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

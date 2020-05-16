@@ -16,4 +16,8 @@ public class NotFoundException extends RuntimeException implements Serializable{
 	public NotFoundException(Class<?> c, Long id) {
 		super(c.getName()+" for ID " + id + " does not exist.");
 	}
+	
+	public NotFoundException(Class<?> c, String massage) {
+		super(c.getName()+": "+massage);
+	}
 }
