@@ -14,7 +14,7 @@ import br.uece.eesdevops.amazingmovies.domain.exception.InternalServerErrorExcep
 import br.uece.eesdevops.amazingmovies.repository.MovieRepository;
 
 @Service
-public class MovieSaveService implements Serializable{
+public class ChangeMovieService implements Serializable{
 
 	/**
 	 * 
@@ -24,7 +24,7 @@ public class MovieSaveService implements Serializable{
 	MovieRepository movieRepository;
 
 	@Autowired
-	MovieSaveService(
+	ChangeMovieService(
 			MovieRepository movieRepository 
 	){
 		this.movieRepository = movieRepository;

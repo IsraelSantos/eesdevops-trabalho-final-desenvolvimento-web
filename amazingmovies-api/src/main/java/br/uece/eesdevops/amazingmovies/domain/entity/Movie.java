@@ -37,6 +37,12 @@ public class Movie implements Serializable{
     
     @Column(name = "average_evaluation", nullable = false, columnDefinition="NUMERIC(20) DEFAULT 0.0")
     private Double averageEvaluation = 0d;
+    
+    @Column(name = "release_year", nullable = false, columnDefinition="int4")
+    private Integer releaseYear;
+    
+    @Column(name = "producer", nullable = true)
+    private String producer;
 
 	public Long getId() {
 		return id;
@@ -92,6 +98,22 @@ public class Movie implements Serializable{
 
 	public void setGenre(String genre) {
 		this.genre = genre;
+	}
+
+	public Integer getReleaseYear() {
+		return releaseYear;
+	}
+
+	public void setReleaseYear(Integer releaseYear) {
+		this.releaseYear = releaseYear;
+	}
+
+	public String getProducer() {
+		return producer;
+	}
+
+	public void setProducer(String producer) {
+		this.producer = producer;
 	}
 
 }

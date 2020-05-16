@@ -42,5 +42,13 @@ public class Evaluation implements Serializable{
 	public void setValue(Double value) {
 		this.value = value;
 	}
+
+	public Movie getMovie() {
+		return movie;
+	}
+
+	public void setMovie(Movie movie) {
+		this.movie = movie;
+	}
     
 }
