@@ -1,4 +1,4 @@
-package br.uece.eesdevops.amazingmovies.exception;
+package br.uece.eesdevops.amazingmovies.domain.exception;
 
 import java.io.Serializable;
 

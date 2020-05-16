@@ -1,4 +1,4 @@
-package br.uece.eesdevops.amazingmovies.service;
+package br.uece.eesdevops.amazingmovies.domain.service;
 
 import java.io.Serializable;
 
@@ -7,8 +7,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import br.uece.eesdevops.amazingmovies.entity.Movie;
-import br.uece.eesdevops.amazingmovies.exception.InternalServerErrorException;
+import br.uece.eesdevops.amazingmovies.domain.entity.Movie;
+import br.uece.eesdevops.amazingmovies.domain.exception.InternalServerErrorException;
 import br.uece.eesdevops.amazingmovies.repository.MovieRepository;
 
 @Service

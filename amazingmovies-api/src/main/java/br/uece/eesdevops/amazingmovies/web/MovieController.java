@@ -1,4 +1,4 @@
-package br.uece.eesdevops.amazingmovies.controller;
+package br.uece.eesdevops.amazingmovies.web;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.uece.eesdevops.amazingmovies.entity.Movie;
-import br.uece.eesdevops.amazingmovies.service.MovieFindService;
-import br.uece.eesdevops.amazingmovies.service.MovieListService;
-import br.uece.eesdevops.amazingmovies.service.MovieSaveService;
+import br.uece.eesdevops.amazingmovies.domain.entity.Movie;
+import br.uece.eesdevops.amazingmovies.domain.service.MovieFindService;
+import br.uece.eesdevops.amazingmovies.domain.service.MovieListService;
+import br.uece.eesdevops.amazingmovies.domain.service.MovieSaveService;
 
 @RestController
 @RequestMapping("/v1.0/movies")

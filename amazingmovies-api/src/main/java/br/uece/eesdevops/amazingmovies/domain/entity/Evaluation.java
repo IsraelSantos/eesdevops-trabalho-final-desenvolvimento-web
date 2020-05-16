@@ -1,4 +1,4 @@
-package br.uece.eesdevops.amazingmovies.entity;
+package br.uece.eesdevops.amazingmovies.domain.entity;
 
 import java.io.Serializable;
 
