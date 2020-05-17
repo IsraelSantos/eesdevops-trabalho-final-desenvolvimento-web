@@ -147,9 +147,13 @@ public class MovieTests {
         Movie movie = mapper.readValue(BodyRequests.newMovieRequest(), Movie.class);
 
         movie = movieRepository.save(movie);
+        
+        Integer id = movie.getId();
+        
+        movie = mapper.readValue(BodyRequests.updateMovieRequest(), Movie.class);
 
-        MockHttpServletRequestBuilder request = put("/v1.0/movies/" + movie.getId())
-                .content(BodyRequests.newMovieRequest())
+        MockHttpServletRequestBuilder request = put("/v1.0/movies/" + id)
+                .content(BodyRequests.updateMovieRequest())
                 .contentType(MediaType.APPLICATION_JSON);
 
         mockMvc.perform(request)
