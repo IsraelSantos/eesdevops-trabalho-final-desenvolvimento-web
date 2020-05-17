@@ -9,9 +9,9 @@ import org.springframework.stereotype.Repository;
 import br.uece.eesdevops.amazingmovies.domain.entity.Movie;
 
 @Repository
-public interface MovieRepository extends JpaRepository<Movie, Long>{
+public interface MovieRepository extends JpaRepository<Movie, Integer>{
 	
-	Optional<List<Movie>> findByNameAndIdIsNot(String name, Long id);
+	Optional<List<Movie>> findByNameAndIdIsNot(String name, Integer id);
 	
 	Optional<List<Movie>> findByName(String name);
 	

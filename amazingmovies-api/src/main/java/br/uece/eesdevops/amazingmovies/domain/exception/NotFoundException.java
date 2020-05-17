@@ -13,7 +13,7 @@ public class NotFoundException extends RuntimeException implements Serializable{
 	 */
 	private static final long serialVersionUID = -9052530680010048609L;
 
-	public NotFoundException(Class<?> c, Long id) {
+	public NotFoundException(Class<?> c, Integer id) {
 		super(c.getName()+" for ID " + id + " does not exist.");
 	}
 	

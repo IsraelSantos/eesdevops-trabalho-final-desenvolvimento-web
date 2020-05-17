@@ -26,7 +26,7 @@ public class RemoveMovieService {
 	}
 	
 	@Transactional
-	public void execute(Long idMovie) throws RuntimeException {
+	public void execute(Integer idMovie) throws RuntimeException {
 		try {
 			
 			Optional<Movie> movie = movieRepository.findById(idMovie);

@@ -14,7 +14,7 @@ public class EvaluationDTO implements DTO<Evaluation>, Serializable{
 
 	private Double value;
     
-    private Long idMovie;	
+    private Integer idMovie;	
 	
 	public Double getValue() {
 		return value;
@@ -24,11 +24,11 @@ public class EvaluationDTO implements DTO<Evaluation>, Serializable{
 		this.value = value;
 	}
 
-	public Long getIdMovie() {
+	public Integer getIdMovie() {
 		return idMovie;
 	}
 
-	public void setIdMovie(Long idMovie) {
+	public void setIdMovie(Integer idMovie) {
 		this.idMovie = idMovie;
 	}
 

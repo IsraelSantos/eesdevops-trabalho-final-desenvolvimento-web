@@ -18,7 +18,7 @@ public class Movie implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     @Column(name = "name_m", nullable = false)
     private String name;
@@ -44,11 +44,11 @@ public class Movie implements Serializable{
     @Column(name = "producer", nullable = true)
     private String producer;
 
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
