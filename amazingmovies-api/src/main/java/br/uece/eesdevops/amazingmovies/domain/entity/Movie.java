@@ -35,7 +35,7 @@ public class Movie implements Serializable{
     @Column(name = "synopsis", nullable = false, columnDefinition="TEXT")
     private String synopsis;
     
-    @Column(name = "average_evaluation", nullable = false, columnDefinition="NUMERIC(20) DEFAULT 0.0")
+    @Column(name = "average_evaluation", nullable = false, columnDefinition="float(53) DEFAULT 0.0")
     private Double averageEvaluation = 0d;
     
     @Column(name = "release_year", nullable = false, columnDefinition="int4")

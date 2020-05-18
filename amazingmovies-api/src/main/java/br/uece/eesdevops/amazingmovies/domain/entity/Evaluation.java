@@ -24,7 +24,7 @@ public class Evaluation implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 	
-    @Column(name = "value_e", nullable = false, columnDefinition="NUMERIC(20)")
+    @Column(name = "value_e", nullable = false, columnDefinition="float(53)")
     private Double value = 0d;
     
 	@Column(name = "date_registration", nullable = false)
