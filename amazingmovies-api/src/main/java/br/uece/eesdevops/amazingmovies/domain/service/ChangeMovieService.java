@@ -25,7 +25,7 @@ public class ChangeMovieService implements Serializable{
 	MovieRepository movieRepository;
 
 	@Autowired
-	ChangeMovieService(
+	public ChangeMovieService(
 			MovieRepository movieRepository 
 	){
 		this.movieRepository = movieRepository;
@@ -50,11 +50,6 @@ public class ChangeMovieService implements Serializable{
 			
 			if (list.isPresent()) {
 				throw new ConflictMovieException();
-			}
-			
-			if (movie.getId() != null) {
-				//Calcular a media de avaliações antes de salvar o filme
-				
 			}
 			
 			return movieRepository.save(movie);

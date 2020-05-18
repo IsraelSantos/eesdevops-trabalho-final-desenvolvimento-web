@@ -9,10 +9,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.io.IOException;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,12 +23,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.uece.eesdevops.amazingmovies.domain.entity.Movie;
 import br.uece.eesdevops.amazingmovies.repository.MovieRepository;
+import br.uece.eesdevops.amazingmovies.util.FakeMovies;
+import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 
 
 @AutoConfigureMockMvc
 @SpringBootTest(classes = AmazingmoviesApplication.class)
 @DisplayName("Runs all tests for movie registration")
-public class MovieTests {
+@AutoConfigureEmbeddedDatabase
+public class MovieControllerTests {
 	
 	@Autowired
     private MockMvc mockMvc;
@@ -42,19 +41,7 @@ public class MovieTests {
 
     @Autowired
     private MovieRepository movieRepository;
-
-    private static EmbeddedDatabase database;
     
-    @BeforeAll
-    static void init() throws IOException {
-        database = new EmbeddedDatabase();
-    }
-
-    @AfterAll
-    static void tearDown() throws IOException {
-        database.stopServer();
-    }
-
     @BeforeEach
     void beforeEach() {
     	movieRepository.deleteAllInBatch();

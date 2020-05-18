@@ -20,9 +20,8 @@ import br.uece.eesdevops.amazingmovies.domain.service.ChangeMovieService;
 import br.uece.eesdevops.amazingmovies.repository.MovieRepository;
 import br.uece.eesdevops.amazingmovies.util.FakeMovies;
 
-
-@DisplayName("Runs all tests for domain service class responsible for change a movie")
-public class ChangeMovieServiceTests {
+@DisplayName("Runs all tests for domain service class responsible for remove a movie")
+public class RemoveMovieServiceTests {
 	
 	private final MovieRepository movieRepository = 
 			mock(MovieRepository.class);

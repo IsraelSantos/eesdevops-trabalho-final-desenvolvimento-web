@@ -16,6 +16,8 @@ import br.uece.eesdevops.amazingmovies.domain.entity.Movie;
 import br.uece.eesdevops.amazingmovies.domain.service.ToEvaluateService;
 import br.uece.eesdevops.amazingmovies.repository.EvaluationRepository;
 import br.uece.eesdevops.amazingmovies.repository.MovieRepository;
+import br.uece.eesdevops.amazingmovies.util.FakeEvaluation;
+import br.uece.eesdevops.amazingmovies.util.FakeMovies;
 
 @DisplayName("Runs all tests for domain service class responsible for evaluations")
 public class ToEvaluateServiceTests {

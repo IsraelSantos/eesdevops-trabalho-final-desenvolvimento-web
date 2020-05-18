@@ -13,6 +13,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>amazingmovies-api</name>
 	<description>Trabalho final da disciplina de Desenvolvimento Web da Especializacao em Engenharia de Software com Enfase em DevOps (turma 2)</description>
+	<packaging>jar</packaging>
 
 	<properties>
 		<java.version>1.8</java.version>
@@ -23,13 +24,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		<!--
-		<dependency>
-			<groupId>org.flywaydb</groupId>
-			<artifactId>flyway-core</artifactId>
-		</dependency>
-		
-		-->
 		<dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -37,8 +31,14 @@
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+			<version>42.2.12</version>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>6.3.3</version>
+        </dependency>
 		<dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
@@ -49,10 +49,16 @@
             <artifactId>json-path</artifactId>
             <scope>test</scope>
         </dependency>
+		<dependency>
+		    <groupId>io.zonky.test</groupId>
+		    <artifactId>embedded-database-spring-test</artifactId>
+		    <version>1.5.3</version>
+		    <scope>test</scope>
+		</dependency>
         <dependency>
-            <groupId>io.zonky.test</groupId>
-            <artifactId>embedded-postgres</artifactId>
-            <version>1.2.6</version>
+            <groupId>org.flywaydb.flyway-test-extensions</groupId>
+            <artifactId>flyway-spring5-test</artifactId>
+            <version>6.3.3</version>
             <scope>test</scope>
         </dependency>
 		<dependency>
