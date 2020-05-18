@@ -42,22 +42,4 @@ public class BodyRequests {
             throw new IllegalArgumentException("File new-evaluation-request.json could not be loaded.");
         }
     }
-    
-    public static String newEvaluationErrorValueRequest() throws IOException {
-        InputStream stream = classLoader.getResourceAsStream("new-evaluation-error-value-request.json");
-        if (stream != null) {
-            return IOUtils.toString(stream, StandardCharsets.UTF_8);
-        } else {
-            throw new IllegalArgumentException("File new-evaluation-error-value-request.json could not be loaded.");
-        }
-    }
-    
-    public static String newEvaluationErrorMovieRequest() throws IOException {
-        InputStream stream = classLoader.getResourceAsStream("new-evaluation-error-movie-request.json");
-        if (stream != null) {
-            return IOUtils.toString(stream, StandardCharsets.UTF_8);
-        } else {
-            throw new IllegalArgumentException("File new-evaluation-error-movie-request.json could not be loaded.");
-        }
-    }
 }
