@@ -5,7 +5,7 @@ import java.io.Serializable;
 import br.uece.eesdevops.amazingmovies.domain.entity.Evaluation;
 import br.uece.eesdevops.amazingmovies.domain.entity.Movie;
 
-public class EvaluationDTO implements DTO<Evaluation>, Serializable{
+public class EvaluationDTO implements DTO<Evaluation, EvaluationDTO>, Serializable{
 
     /**
 	 * 
@@ -14,7 +14,7 @@ public class EvaluationDTO implements DTO<Evaluation>, Serializable{
 
 	private Double value;
     
-    private Integer idMovie;	
+    private Integer idMovie;
 	
 	public Double getValue() {
 		return value;
@@ -39,6 +39,14 @@ public class EvaluationDTO implements DTO<Evaluation>, Serializable{
 		Movie movie = new Movie();
 		movie.setId(this.idMovie);
 		res.setMovie(movie);
+		return res;
+	}
+
+	@Override
+	public EvaluationDTO toDTO(Evaluation entity) {
+		EvaluationDTO res = new EvaluationDTO();
+		res.setIdMovie(entity.getMovie().getId());
+		res.setValue(entity.getValue());
 		return res;
 	}
 

@@ -1,5 +1,6 @@
 package br.uece.eesdevops.amazingmovies.domain.service;
 
+import java.util.Calendar;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +42,11 @@ public class ToEvaluateService {
 			Optional<Movie> movie = movieRepository.findById(evaluation.getMovie().getId());
 			
 			if(movie.isPresent()) {
-				if (evaluation.getValue() == null) {
+				if (evaluation.getValue() == null || (evaluation.getValue() != null && (evaluation.getValue()<0 || evaluation.getValue()>5))) {
 					throw new EvaluationWithInvalidValue();
 				}
+				evaluation.setDateRegistration(Calendar.getInstance().getTime());
+				
 				Evaluation res = evaluationRepository.save(evaluation);
 				Double average = evaluationRepository.averageEvaluationByMovieId(evaluation.getMovie().getId());
 				Movie mTmp = movie.get();

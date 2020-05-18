@@ -15,7 +15,7 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Integer>
 	@Query("delete from Evaluation e where e.movie.id=:movieId")
 	public void deleteByMovieId(@Param("movieId") Integer movieId);
 	
-	@Query("select sum(e.value) from Evaluation e where e.movie.id=:movieId")
+	@Query("select avg(e.value) from Evaluation e where e.movie.id=:movieId")
 	public Double averageEvaluationByMovieId(@Param("movieId") Integer movieId);
 	
 }

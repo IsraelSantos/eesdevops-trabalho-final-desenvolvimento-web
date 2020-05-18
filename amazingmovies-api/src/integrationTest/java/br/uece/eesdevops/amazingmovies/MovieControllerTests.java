@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.uece.eesdevops.amazingmovies.domain.entity.Movie;
+import br.uece.eesdevops.amazingmovies.repository.EvaluationRepository;
 import br.uece.eesdevops.amazingmovies.repository.MovieRepository;
 import br.uece.eesdevops.amazingmovies.util.BodyRequests;
 import br.uece.eesdevops.amazingmovies.util.FakeMovies;
@@ -44,8 +45,12 @@ public class MovieControllerTests {
     @Autowired
     private MovieRepository movieRepository;
     
+    @Autowired
+    private EvaluationRepository evaluationRepository;
+    
     @BeforeEach
     void beforeEach() {
+    	evaluationRepository.deleteAllInBatch();
     	movieRepository.deleteAllInBatch();
     }
     

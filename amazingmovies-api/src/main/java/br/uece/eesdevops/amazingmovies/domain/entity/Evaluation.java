@@ -1,6 +1,7 @@
 package br.uece.eesdevops.amazingmovies.domain.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 public class Evaluation implements Serializable{
@@ -23,6 +26,10 @@ public class Evaluation implements Serializable{
 	
     @Column(name = "value_e", nullable = false, columnDefinition="NUMERIC(20)")
     private Double value = 0d;
+    
+	@Column(name = "date_registration", nullable = false)
+	@Temporal(TemporalType.DATE)
+    private Date dateRegistration;
     
     @ManyToOne
     private Movie movie;
@@ -49,6 +56,14 @@ public class Evaluation implements Serializable{
 
 	public void setMovie(Movie movie) {
 		this.movie = movie;
+	}
+
+	public Date getDateRegistration() {
+		return dateRegistration;
+	}
+
+	public void setDateRegistration(Date dateRegistration) {
+		this.dateRegistration = dateRegistration;
 	}
     
 }
