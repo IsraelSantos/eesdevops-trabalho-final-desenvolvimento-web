@@ -1,6 +1,7 @@
 package br.uece.eesdevops.amazingmovies;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import br.uece.eesdevops.amazingmovies.domain.entity.Evaluation;
 import br.uece.eesdevops.amazingmovies.domain.entity.Movie;
+import br.uece.eesdevops.amazingmovies.domain.exception.EvaluationWithoutMovieException;
 import br.uece.eesdevops.amazingmovies.domain.service.ToEvaluateService;
 import br.uece.eesdevops.amazingmovies.repository.EvaluationRepository;
 import br.uece.eesdevops.amazingmovies.repository.MovieRepository;
@@ -61,5 +63,20 @@ public class ToEvaluateServiceTests {
 
         verify(movieRepository).findById(evaluation.getMovie().getId());
         verify(evaluationRepository).save(evaluation);
+    }
+    
+    @Test
+    @DisplayName("should to return evaluation without movie exception to returned status successfully")
+    void should_to_return_evaluation_without_movie_exception_to_returned_status_successfully() {
+        Evaluation evaluation = FakeEvaluation.fakeEvaluationIfNoId();
+
+        when(movieRepository.findById(evaluation.getMovie().getId()))
+                .thenReturn(Optional.empty());
+
+        assertThrows(EvaluationWithoutMovieException.class, () -> {
+        	service.execute(evaluation);
+        });
+
+        verify(movieRepository).findById(evaluation.getMovie().getId());
     }
 }

@@ -13,7 +13,7 @@ import br.uece.eesdevops.amazingmovies.domain.service.ToEvaluateService;
 import br.uece.eesdevops.amazingmovies.web.entity.EvaluationDTO;
 
 @RestController
-@RequestMapping("/v1.0/evaluation")
+@RequestMapping("/v1.0/evaluations")
 public class EvaluationController {
 
 	ToEvaluateService toEvaluateService;
@@ -25,9 +25,9 @@ public class EvaluationController {
 	
     @PostMapping(consumes = APPLICATION_JSON_VALUE, 
     		produces = APPLICATION_JSON_VALUE)
-    public ResponseEntity<EvaluationDTO> evaluate(@RequestBody EvaluationDTO movie) {
-
-        return ResponseEntity.ok(movie);
+    public ResponseEntity<EvaluationDTO> evaluate(@RequestBody EvaluationDTO evaluation) {
+    	
+        return ResponseEntity.ok(evaluation);
     }
 	
 }

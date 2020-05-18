@@ -6,6 +6,7 @@ import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import br.uece.eesdevops.amazingmovies.domain.entity.Movie;
 import br.uece.eesdevops.amazingmovies.repository.MovieRepository;
+import br.uece.eesdevops.amazingmovies.util.BodyRequests;
 import br.uece.eesdevops.amazingmovies.util.FakeMovies;
 import io.zonky.test.db.AutoConfigureEmbeddedDatabase;
 
@@ -154,6 +156,29 @@ public class MovieControllerTests {
                 .andExpect(jsonPath("$.averageEvaluation", is(movie.getAverageEvaluation())))
                 .andExpect(jsonPath("$.releaseYear", is(movie.getReleaseYear())))
                 .andExpect(jsonPath("$.producer", is(movie.getProducer())));
+    }
+    
+  //endregion
+    
+    // region delete /movies/{id}
+
+    @Test
+    @DisplayName("should delete a movie successfully")
+    void should_delete_a_movie_successfully() throws Exception {
+        Movie movie = mapper.readValue(BodyRequests.newMovieRequest(), Movie.class);
+
+        movie = movieRepository.save(movie);
+        
+        Integer id = movie.getId();
+        
+        movie = mapper.readValue(BodyRequests.updateMovieRequest(), Movie.class);
+
+        MockHttpServletRequestBuilder request = delete("/v1.0/movies/" + id)
+                .content(BodyRequests.updateMovieRequest())
+                .contentType(MediaType.APPLICATION_JSON);
+
+        mockMvc.perform(request)
+                .andExpect(status().isNoContent());
     }
     
   //endregion

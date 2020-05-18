@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +24,7 @@ import br.uece.eesdevops.amazingmovies.domain.entity.Movie;
 import br.uece.eesdevops.amazingmovies.domain.exception.InternalServerErrorException;
 import br.uece.eesdevops.amazingmovies.domain.exception.NotFoundException;
 import br.uece.eesdevops.amazingmovies.domain.service.ChangeMovieService;
-import br.uece.eesdevops.amazingmovies.domain.service.RemoveMovieService;
+import br.uece.eesdevops.amazingmovies.repository.EvaluationRepository;
 import br.uece.eesdevops.amazingmovies.repository.MovieRepository;
 import br.uece.eesdevops.amazingmovies.web.entity.MovieDTO;
 
@@ -37,18 +38,18 @@ public class MovieController implements Serializable{
 	private static final long serialVersionUID = 4982526632752626588L;
 	
 	private MovieRepository movieRepository;
+	private EvaluationRepository evaluationRepository;
 	private ChangeMovieService movieSaveService;
-	private RemoveMovieService removeMovieService;
 	
 	@Autowired
 	MovieController(
 				MovieRepository movieRepository,
-				ChangeMovieService movieSaveService,
-				RemoveMovieService removeMovieService
+				EvaluationRepository evaluationRepository,
+				ChangeMovieService movieSaveService
 			){
 		this.movieRepository = movieRepository;
+		this.evaluationRepository = evaluationRepository;
 		this.movieSaveService = movieSaveService;
-		this.removeMovieService = removeMovieService;
 	}
     
 	//Para setar página e comprimento na chamada: http://localhost:8081/movies/list?page=0&size=5
@@ -102,8 +103,17 @@ public class MovieController implements Serializable{
     }
     
     @DeleteMapping(value = "/{id}")
+    @Transactional
     public ResponseEntity<?> delete(@PathVariable Integer id) {
-    	removeMovieService.execute(id);
+		Optional<Movie> movie = movieRepository.findById(id);
+		
+		if(movie.isPresent()) {
+			Movie tmp = movie.get();
+			evaluationRepository.deleteByMovieId(tmp.getId());
+			movieRepository.delete(tmp);
+		}else {
+			throw new NotFoundException(Movie.class, "The movie could not be deleted because it does not exist!");
+		}
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 

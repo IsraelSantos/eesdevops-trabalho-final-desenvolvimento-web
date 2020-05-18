@@ -1,10 +1,12 @@
-package br.uece.eesdevops.amazingmovies;
+package br.uece.eesdevops.amazingmovies.util;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.io.IOUtils;
+
+import br.uece.eesdevops.amazingmovies.AmazingmoviesApplication;
 
 public class BodyRequests {
 	
@@ -14,7 +16,7 @@ public class BodyRequests {
         classLoader = AmazingmoviesApplication.class.getClassLoader();
     }
 
-    static String newMovieRequest() throws IOException {
+    public static String newMovieRequest() throws IOException {
         InputStream stream = classLoader.getResourceAsStream("new-movie-request.json");
         if (stream != null) {
             return IOUtils.toString(stream, StandardCharsets.UTF_8);
@@ -23,7 +25,7 @@ public class BodyRequests {
         }
     }
 
-    static String updateMovieRequest() throws IOException {
+    public static String updateMovieRequest() throws IOException {
         InputStream stream = classLoader.getResourceAsStream("update-movie-request.json");
         if (stream != null) {
             return IOUtils.toString(stream, StandardCharsets.UTF_8);
