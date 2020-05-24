@@ -65,7 +65,8 @@ public class EvaluationControllerTests {
         
         MockHttpServletRequestBuilder request = post("/v1.0/evaluations")
                 .content(requestS)
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Origin","*");
 
         mockMvc.perform(request)
                 .andExpect(status().isCreated())
@@ -74,7 +75,8 @@ public class EvaluationControllerTests {
         
         request = post("/v1.0/evaluations")
                 .content(requestS)
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Origin","*");
 
         mockMvc.perform(request)
                 .andExpect(status().isCreated())

@@ -1,0 +1,23 @@
+version: '3'
+services:
+#  db:
+#    image: postgres
+#    restart: always
+#    container_name: my-postgres
+#    ports:
+#      - 5432:5432
+#    environment:
+#      POSTGRES_PASSWORD: postgres
+  amazingmovies-api:
+#    depends_on:
+#      - my-postgres
+    build: 
+      context: ./amazingmovies-api
+      dockerfile: Dockerfile
+    container_name: amazingmovies-api
+    restart: always
+#    links:
+#      - my-postgres
+    restart: always
+    ports:
+      - 8081:8081

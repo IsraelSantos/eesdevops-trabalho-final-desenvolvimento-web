@@ -59,7 +59,7 @@ public class MovieControllerTests {
     @Test
     @DisplayName("should get all movies with no results")
     void should_get_all_movies_with_no_results() throws Exception {
-        mockMvc.perform(get("/v1.0/movies"))
+        mockMvc.perform(get("/v1.0/movies").header("Origin","*"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(0)));
     }
@@ -71,7 +71,7 @@ public class MovieControllerTests {
 
         movie = movieRepository.save(movie);
         
-        mockMvc.perform(get("/v1.0/movies"))
+        mockMvc.perform(get("/v1.0/movies").header("Origin","*"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.content", hasSize(1)))
                 .andExpect(jsonPath("$.content[0].id", is(movie.getId())))
@@ -92,7 +92,7 @@ public class MovieControllerTests {
 
         movie = movieRepository.save(movie);
         
-        mockMvc.perform(get("/v1.0/movies/"+movie.getId()))
+        mockMvc.perform(get("/v1.0/movies/"+movie.getId()).header("Origin","*"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(movie.getId())))
                 .andExpect(jsonPath("$.name", is(movie.getName())))
@@ -116,7 +116,8 @@ public class MovieControllerTests {
 
         MockHttpServletRequestBuilder request = post("/v1.0/movies")
                 .content(BodyRequests.newMovieRequest())
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Origin","*");
 
         mockMvc.perform(request)
                 .andExpect(status().isCreated())
@@ -148,7 +149,8 @@ public class MovieControllerTests {
 
         MockHttpServletRequestBuilder request = put("/v1.0/movies/" + id)
                 .content(BodyRequests.updateMovieRequest())
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Origin","*");
 
         mockMvc.perform(request)
                 .andExpect(status().isOk())
@@ -180,7 +182,8 @@ public class MovieControllerTests {
 
         MockHttpServletRequestBuilder request = delete("/v1.0/movies/" + id)
                 .content(BodyRequests.updateMovieRequest())
-                .contentType(MediaType.APPLICATION_JSON);
+                .contentType(MediaType.APPLICATION_JSON)
+                .header("Origin","*");
 
         mockMvc.perform(request)
                 .andExpect(status().isNoContent());
