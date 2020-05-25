@@ -17,8 +17,9 @@ import StarIcon from '@material-ui/icons/Star';
 import movieApi from '../api/movieApi';
 import Loading from './Loading';
 import Message from './Message';
-import ModalNewMovie from './ModalNewMovie';
+import MyModal from './MyModal';
 import { Grid, Button } from '@material-ui/core';
+import FormMovie from './FormMovie';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -99,7 +100,8 @@ export default function MovieTable(props){
         value: '',
         type: 'success'
     });
-    const [isOpenModal, setIsOpenModal] = useState(false);
+    const [isOpenModalNewMovie, setIsOpenModalNewMovie] = useState(false);
+    const [isOpenModalChangeMovie, setIsOpenModalChangeMovie] = useState(false);
 
     const clearMessage = () => {
         setMessage(
@@ -160,88 +162,109 @@ export default function MovieTable(props){
     }
 
     const openModalNewMovie = () => {
-        setIsOpenModal(true);
+        setIsOpenModalNewMovie(true);
+    }
+
+    const closeModalNewMovie = () => {
+        setIsOpenModalNewMovie(false);
+    }
+
+    const openModalChangeMovie = () => {
+        setIsOpenModalChangeMovie(true);
+    }
+
+    const closeModalChangeMovie = () => {
+        setIsOpenModalChangeMovie(false);
     }
 
     return (
         <div>
             <Grid container spacing={2} className = {classes.grid}>
-            <Grid item xs={12} >
-                <h1 className={classes.title}>Cadastro de filmes e suas avaliações</h1>
-            </Grid>
-            <Grid item xs={12} sm={11}>
-            </Grid>
-            <Grid item xs={12} sm={1}>
-                <Button className = {classes.newbutton} onClick = {openModalNewMovie}>Novo</Button>
-            </Grid>
-            <Grid item xs={12}>
-                <Paper>
-                        <TableContainer className = {classes.tablecontainer}>
-                            <Table stickyHeader aria-label="sticky table">
-                            <TableHead>
-                                <TableRow>
-                                {columns.map((column) => (
-                                    <TableCell
-                                        key={column.key}
-                                        align={column.align}
-                                        style={{ minWidth: column.minWidth }}
-                                    >
-                                    {column.label}
-                                    </TableCell>
-                                ))}
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {(!isLoading)? data.content.map((row) => {
-                                return (
-                                    <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                                    {columns.map((column) => {
-                                        const value = row[column.key];
-                                        return (
-                                        <TableCell key={column.key} align={column.align}>
-                                            {(column.key !== 'buttons' && column.key !== 'averageEvaluation')? 
-                                                (column.format && typeof value === 'number' ? column.format(value) : value)
-                                            :(
-                                                (column.key === 'buttons')?
-                                                (<div className = {classes.controle}>
-                                                    <IconButton title='Editar' aria-label="Editar"> <CreateIcon color='primary' /> </IconButton>  
-                                                    <IconButton title='Excluir' aria-label="Excluir"> <Delete color='secondary' /> </IconButton> 
-                                                    <IconButton title='Avaliar' aria-label="Avaliar"> <StarIcon color='inherit' /> </IconButton>
-                                                </div>)
-                                                :(
-                                                (column.key === 'averageEvaluation')?  
-                                                (<div title={column.format(value)}>
-                                                    <Rating
-                                                            value={value}
-                                                            precision={0.5}
-                                                            readOnly={true}
-                                                        />
-                                                </div>):null
-                                                )
-                                            )
-                                            }
-                                        </TableCell>
-                                        );
-                                    })}
-                                    </TableRow>
-                                );
-                                }):null}
-                            </TableBody>
-                            </Table>
-                        </TableContainer>
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 20]}
-                            component="div"
-                            count={data.totalElements}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            onChangePage={changePageEvent}
-                            onChangeRowsPerPage={changeRowsPerPageEvent}
-                        />
-                    </Paper>
-                    </Grid>
+                <Grid item xs={12} >
+                    <h1 className={classes.title}>Cadastro de filmes e suas avaliações</h1>
                 </Grid>
-            <ModalNewMovie open={isOpenModal} />
+                <Grid item xs={12} sm={11}>
+                </Grid>
+                <Grid item xs={12} sm={1}>
+                    <Button className = {classes.newbutton} onClick = {openModalNewMovie}>Novo</Button>
+                </Grid>
+                <Grid item xs={12}>
+                    <Paper>
+                            <TableContainer className = {classes.tablecontainer}>
+                                <Table stickyHeader aria-label="sticky table">
+                                <TableHead>
+                                    <TableRow>
+                                    {columns.map((column) => (
+                                        <TableCell
+                                            key={column.key}
+                                            align={column.align}
+                                            style={{ minWidth: column.minWidth }}
+                                        >
+                                        {column.label}
+                                        </TableCell>
+                                    ))}
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {(!isLoading)? data.content.map((row) => {
+                                    return (
+                                        <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                                        {columns.map((column) => {
+                                            const value = row[column.key];
+                                            return (
+                                            <TableCell key={column.key} align={column.align}>
+                                                {(column.key !== 'buttons' && column.key !== 'averageEvaluation')? 
+                                                    (column.format && typeof value === 'number' ? column.format(value) : value)
+                                                :(
+                                                    (column.key === 'buttons')?
+                                                    (<div className = {classes.controle}>
+                                                        <IconButton title='Editar' aria-label="Editar" onClick = {openModalChangeMovie}> <CreateIcon color='primary' /> </IconButton>  
+                                                        <IconButton title='Excluir' aria-label="Excluir"> <Delete color='secondary' /> </IconButton> 
+                                                        <IconButton title='Avaliar' aria-label="Avaliar"> <StarIcon color='inherit' /> </IconButton>
+                                                    </div>)
+                                                    :(
+                                                    (column.key === 'averageEvaluation')?  
+                                                    (<div title={column.format(value)}>
+                                                        <Rating
+                                                                value={value}
+                                                                precision={0.5}
+                                                                readOnly={true}
+                                                            />
+                                                    </div>):null
+                                                    )
+                                                )
+                                                }
+                                            </TableCell>
+                                            );
+                                        })}
+                                        </TableRow>
+                                    );
+                                    }):null}
+                                </TableBody>
+                                </Table>
+                            </TableContainer>
+                            <TablePagination
+                                rowsPerPageOptions={[5, 10, 20]}
+                                component="div"
+                                count={data.totalElements}
+                                rowsPerPage={rowsPerPage}
+                                page={page}
+                                onChangePage={changePageEvent}
+                                onChangeRowsPerPage={changeRowsPerPageEvent}
+                            />
+                        </Paper>
+                </Grid>
+            </Grid>
+            <MyModal 
+                title='Cadastro de filme'
+                open={isOpenModalNewMovie} 
+                handleClose = {closeModalNewMovie} 
+                form={<FormMovie></FormMovie>} />
+            <MyModal
+                title="Edição de filme"
+                open={isOpenModalChangeMovie} 
+                handleClose = {closeModalChangeMovie} 
+                form={<FormMovie></FormMovie>} />
             <Loading open={isLoading}/>
             <Message open={message.show} message={message.value} type={message.type} handler={clearMessage} />
         </div>
