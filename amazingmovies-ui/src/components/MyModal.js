@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 })); 
 
 
-  export default function ModalForm(props){
+  export default function MyModal(props){
     const classes = useStyles();
     //Hooks
     const {open, handleClose, title, form} = props;
@@ -57,14 +57,14 @@ const useStyles = makeStyles((theme) => ({
     );
 }
 
-ModalForm.defaultProps = {
+MyModal.defaultProps = {
     open: false,
     title: ""
 };
 
-ModalForm.propTypes = {
+MyModal.propTypes = {
     open: PropTypes.bool,
     handleClose: PropTypes.func,
     title: PropTypes.string,
-    form: PropTypes.elementType
+    form: PropTypes.object
 };

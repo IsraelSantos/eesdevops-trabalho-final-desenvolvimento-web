@@ -10,7 +10,7 @@ function Alert(props) {
 
 const useStyles = makeStyles((theme) => ({
     snackbar: {
-      zIndex: theme.zIndex.drawer + 1
+      zIndex: theme.zIndex.drawer + 100
     },
     alert: {
         float: "right"

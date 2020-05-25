@@ -57,7 +57,7 @@ public class MovieController implements Serializable{
     public ResponseEntity<Page<Movie>> getAll(Pageable pageable) {
     	try {
 
-			Page<Movie> movies = movieRepository.findAll(pageable);
+			Page<Movie> movies = movieRepository.findAllByOrderByNameAsc(pageable);
 			
 			return ResponseEntity.ok(movies);
 

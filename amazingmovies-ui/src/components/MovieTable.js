@@ -102,13 +102,14 @@ export default function MovieTable(props){
     });
     const [isOpenModalNewMovie, setIsOpenModalNewMovie] = useState(false);
     const [isOpenModalChangeMovie, setIsOpenModalChangeMovie] = useState(false);
+    const [selectedValue, setSelectedValue] = useState({});
 
     const clearMessage = () => {
         setMessage(
             {
                 show: false,
                 value: '',
-                type: 'success'
+                type: message.type
             }
         );
     }
@@ -148,6 +149,15 @@ export default function MovieTable(props){
         movieApi.listMovies(page, size, onSucces, onError);
     };
 //behavior
+
+    const loadOpen = () => {
+        setIsLoading(true);
+    }
+
+    const loadClose = () => {
+        setIsLoading(false);
+    }
+
     const changePageEvent = (event, newPage) => {
         //Chamar o back aqui
         listMovies(newPage, rowsPerPage);
@@ -161,20 +171,28 @@ export default function MovieTable(props){
         listMovies(page, tmpR);
     }
 
+    const reloadMovies = (event) => {
+        setPage(0);
+        listMovies(page, rowsPerPage);
+    }
+
     const openModalNewMovie = () => {
         setIsOpenModalNewMovie(true);
     }
 
     const closeModalNewMovie = () => {
         setIsOpenModalNewMovie(false);
+        reloadMovies();
     }
 
-    const openModalChangeMovie = () => {
+    const openModalChangeMovie = (value) => {
+        setSelectedValue(value);
         setIsOpenModalChangeMovie(true);
     }
 
     const closeModalChangeMovie = () => {
         setIsOpenModalChangeMovie(false);
+        reloadMovies();
     }
 
     return (
@@ -218,7 +236,7 @@ export default function MovieTable(props){
                                                 :(
                                                     (column.key === 'buttons')?
                                                     (<div className = {classes.controle}>
-                                                        <IconButton title='Editar' aria-label="Editar" onClick = {openModalChangeMovie}> <CreateIcon color='primary' /> </IconButton>  
+                                                        <IconButton title='Editar' aria-label="Editar" onClick = {()=>{openModalChangeMovie(row)}}> <CreateIcon color='primary' /> </IconButton>  
                                                         <IconButton title='Excluir' aria-label="Excluir"> <Delete color='secondary' /> </IconButton> 
                                                         <IconButton title='Avaliar' aria-label="Avaliar"> <StarIcon color='inherit' /> </IconButton>
                                                     </div>)
@@ -259,12 +277,23 @@ export default function MovieTable(props){
                 title='Cadastro de filme'
                 open={isOpenModalNewMovie} 
                 handleClose = {closeModalNewMovie} 
-                form={<FormMovie></FormMovie>} />
+                form={<FormMovie 
+                        loadOpen={loadOpen} 
+                        loadClose={loadClose} 
+                        setMessage={setMessage} 
+                        handleClose = {closeModalNewMovie}>
+                    </FormMovie>} />
             <MyModal
                 title="Edição de filme"
                 open={isOpenModalChangeMovie} 
                 handleClose = {closeModalChangeMovie} 
-                form={<FormMovie></FormMovie>} />
+                form={<FormMovie 
+                        loadOpen={loadOpen} 
+                        loadClose={loadClose} 
+                        setMessage={setMessage} 
+                        handleClose = {closeModalChangeMovie}
+                        values = {selectedValue}>
+                    </FormMovie>} />
             <Loading open={isLoading}/>
             <Message open={message.show} message={message.value} type={message.type} handler={clearMessage} />
         </div>
