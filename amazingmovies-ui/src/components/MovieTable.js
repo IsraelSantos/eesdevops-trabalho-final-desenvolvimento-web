@@ -17,6 +17,7 @@ import StarIcon from '@material-ui/icons/Star';
 import movieApi from '../api/movieApi';
 import Loading from './Loading';
 import Message from './Message';
+import ModalNewMovie from './ModalNewMovie';
 import { Grid, Button } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -96,18 +97,23 @@ export default function MovieTable(props){
     const [message, setMessage] = useState({
         show: false,
         value: '',
-        type: ''
+        type: 'success'
     });
+    const [isOpenModal, setIsOpenModal] = useState(false);
 
     const clearMessage = () => {
         setMessage(
             {
                 show: false,
                 value: '',
-                type: ''
+                type: 'success'
             }
         );
     }
+
+    useEffect(() => {
+        listMovies(page, rowsPerPage);
+    }, [page, rowsPerPage]);
 
 //Api
     const listMovies = (page, size) => {
@@ -139,11 +145,7 @@ export default function MovieTable(props){
     
         movieApi.listMovies(page, size, onSucces, onError);
     };
-
-    useEffect(() => {
-        listMovies(page, rowsPerPage);
-    }, [page, rowsPerPage]);
-
+//behavior
     const changePageEvent = (event, newPage) => {
         //Chamar o back aqui
         listMovies(newPage, rowsPerPage);
@@ -157,16 +159,20 @@ export default function MovieTable(props){
         listMovies(page, tmpR);
     }
 
+    const openModalNewMovie = () => {
+        setIsOpenModal(true);
+    }
+
     return (
         <div>
             <Grid container spacing={2} className = {classes.grid}>
             <Grid item xs={12} >
-                <h1 className={classes.title}>Cadastro de filmes</h1>
+                <h1 className={classes.title}>Cadastro de filmes e suas avaliações</h1>
             </Grid>
             <Grid item xs={12} sm={11}>
             </Grid>
             <Grid item xs={12} sm={1}>
-                <Button className = {classes.newbutton}>Novo</Button>
+                <Button className = {classes.newbutton} onClick = {openModalNewMovie}>Novo</Button>
             </Grid>
             <Grid item xs={12}>
                 <Paper>
@@ -235,6 +241,7 @@ export default function MovieTable(props){
                     </Paper>
                     </Grid>
                 </Grid>
+            <ModalNewMovie open={isOpenModal} />
             <Loading open={isLoading}/>
             <Message open={message.show} message={message.value} type={message.type} handler={clearMessage} />
         </div>
