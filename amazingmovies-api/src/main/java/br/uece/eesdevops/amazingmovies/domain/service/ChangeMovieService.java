@@ -42,6 +42,8 @@ public class ChangeMovieService implements Serializable{
 				Optional<Movie> tMovie = movieRepository.findById(movie.getId());
 				if (!tMovie.isPresent()) {
 					throw new NotFoundException(Movie.class, movie.getId());
+				}else {
+					movie.setAverageEvaluation(tMovie.get().getAverageEvaluation());
 				}
 				list = movieRepository.findByNameAndIdIsNot(movie.getName(), movie.getId());
 			}else {

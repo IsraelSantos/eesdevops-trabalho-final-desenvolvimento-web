@@ -18,8 +18,22 @@ const changeMovie = (id, movie, onSuccess, onError) => {
   .catch(onError);
 };
 
+const deleteMovie = (id, onSuccess, onError) => {
+  api.axios.delete('movies/'+id)
+  .then(onSuccess)
+  .catch(onError);
+};
+
+const findMovie = (id, onSuccess, onError) => {
+  api.axios.get('movies/'+id)
+  .then(onSuccess)
+  .catch(onError);
+};
+
 export default {
   listMovies,
   saveMovie,
-  changeMovie
+  changeMovie,
+  deleteMovie,
+  findMovie
 };

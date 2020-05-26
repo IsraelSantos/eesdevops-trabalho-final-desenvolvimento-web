@@ -20,6 +20,7 @@ import Message from './Message';
 import MyModal from './MyModal';
 import { Grid, Button } from '@material-ui/core';
 import FormMovie from './FormMovie';
+import MyDialog from './MyDialog';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -103,6 +104,7 @@ export default function MovieTable(props){
     const [isOpenModalNewMovie, setIsOpenModalNewMovie] = useState(false);
     const [isOpenModalChangeMovie, setIsOpenModalChangeMovie] = useState(false);
     const [selectedValue, setSelectedValue] = useState({});
+    const [isDialogDeleteOpen, setIsDialogDeleteOpen] = useState(false);
 
     const clearMessage = () => {
         setMessage(
@@ -148,6 +150,29 @@ export default function MovieTable(props){
     
         movieApi.listMovies(page, size, onSucces, onError);
     };
+
+    const deleteMovie = () => {
+        setIsLoading(true);
+    
+        const onSucces = (response) => {
+          reloadMovies();
+          setIsLoading(false);
+          setIsDialogDeleteOpen(false);
+        }
+    
+        const onError = (error) => {
+          console.error(error);
+          setIsDialogDeleteOpen(false);
+          setIsLoading(false);
+          setMessage({ 
+            show: true,
+            type: 'error',
+            value: 'Não foi possível apagar o filme!'
+          });
+        }
+    
+        movieApi.deleteMovie(selectedValue.id, onSucces, onError);
+    };
 //behavior
 
     const loadOpen = () => {
@@ -158,8 +183,16 @@ export default function MovieTable(props){
         setIsLoading(false);
     }
 
+    const dialogDeleteOpen = (value) => {
+        setSelectedValue(value);
+        setIsDialogDeleteOpen(true);
+    }
+
+    const dialogDeleteClose = () => {
+        setIsDialogDeleteOpen(false);
+    }
+
     const changePageEvent = (event, newPage) => {
-        //Chamar o back aqui
         listMovies(newPage, rowsPerPage);
         setPage(newPage);
     }
@@ -173,7 +206,7 @@ export default function MovieTable(props){
 
     const reloadMovies = (event) => {
         setPage(0);
-        listMovies(page, rowsPerPage);
+        listMovies(0, rowsPerPage);
     }
 
     const openModalNewMovie = () => {
@@ -197,6 +230,7 @@ export default function MovieTable(props){
 
     return (
         <div>
+            <Message open={message.show} message={message.value} type={message.type} handler={clearMessage} />
             <Grid container spacing={2} className = {classes.grid}>
                 <Grid item xs={12} >
                     <h1 className={classes.title}>Cadastro de filmes e suas avaliações</h1>
@@ -237,7 +271,7 @@ export default function MovieTable(props){
                                                     (column.key === 'buttons')?
                                                     (<div className = {classes.controle}>
                                                         <IconButton title='Editar' aria-label="Editar" onClick = {()=>{openModalChangeMovie(row)}}> <CreateIcon color='primary' /> </IconButton>  
-                                                        <IconButton title='Excluir' aria-label="Excluir"> <Delete color='secondary' /> </IconButton> 
+                                                        <IconButton title='Excluir' aria-label="Excluir" onClick = {()=>{dialogDeleteOpen(row)}}> <Delete color='secondary' /> </IconButton> 
                                                         <IconButton title='Avaliar' aria-label="Avaliar"> <StarIcon color='inherit' /> </IconButton>
                                                     </div>)
                                                     :(
@@ -281,21 +315,31 @@ export default function MovieTable(props){
                         loadOpen={loadOpen} 
                         loadClose={loadClose} 
                         setMessage={setMessage} 
-                        handleClose = {closeModalNewMovie}>
+                        handleClose={closeModalNewMovie}
+                        outMessage={setMessage}>
                     </FormMovie>} />
             <MyModal
                 title="Edição de filme"
                 open={isOpenModalChangeMovie} 
                 handleClose = {closeModalChangeMovie} 
                 form={<FormMovie 
+                        isChange={true}
                         loadOpen={loadOpen} 
                         loadClose={loadClose} 
                         setMessage={setMessage} 
                         handleClose = {closeModalChangeMovie}
+                        outMessage={setMessage}
                         values = {selectedValue}>
                     </FormMovie>} />
+            <MyDialog
+                open={isDialogDeleteOpen}
+                title={`Você deseja apagar o filme ${selectedValue.name}?`}
+                message="Se você apagá-lo, não haverá mais como resgatar seus dados e suas avaliações."
+                messageAgree="Sim"
+                messageDisagree="Não"
+                handleClose={dialogDeleteClose}
+                handleAgree={deleteMovie} />
             <Loading open={isLoading}/>
-            <Message open={message.show} message={message.value} type={message.type} handler={clearMessage} />
         </div>
     );
 }

@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 export default function FormCadastro(props){
     const classes = useStyles();
     //Hooks
-    const {values, loadOpen, loadClose, isChange, handleClose} = props;
+    const {values, loadOpen, loadClose, isChange, handleClose, outMessage} = props;
     const [sValues, setSValues] = useState(values);
     const [error, setError] = useState({});
     const [message, setMessage] = useState({});
@@ -70,6 +70,14 @@ export default function FormCadastro(props){
         const onSucces = (response) => {
           loadClose();
           handleClose();
+          const messageA = `Filme ${(isChange)? 'editado': 'salvo'} com sucesso!`;
+          outMessage(
+            { 
+                show: true,
+                type: 'success',
+                value: messageA
+            }
+          );
         }
     
         const onError = (error) => {
@@ -176,7 +184,7 @@ export default function FormCadastro(props){
                                 name='genre'
                                 inputProps={{id: 'genre-id'}}
                             >
-                                <option selected value={'n'}>Selecione</option>
+                                <option value={'n'}>Selecione</option>
                                 <option value={'Romance'}>Romance</option>
                                 <option value={'Aventura'}>Aventura</option>
                                 <option value={'Ficção Científica'}>Ficção científica</option>
@@ -255,4 +263,5 @@ FormCadastro.propTypes = {
     loadOpen: PropTypes.func,
     loadClose: PropTypes.func,
     handleClose: PropTypes.func,
+    outMessage: PropTypes.func
 };
