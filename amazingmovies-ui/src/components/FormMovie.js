@@ -1,9 +1,10 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from "prop-types";
 import { Grid, Button, Select, InputLabel, TextField } from '@material-ui/core';
 import movieApi from '../api/movieApi';
 import OrigAlert from '@material-ui/lab/Alert';
+import Loading from './Loading';
 
 function Alert(props) {
   return <OrigAlert elevation={6} variant="filled" {...props} />;
@@ -25,15 +26,12 @@ const useStyles = makeStyles((theme) => ({
 export default function FormCadastro(props){
     const classes = useStyles();
     //Hooks
-    const {values, loadOpen, loadClose, isChange, handleClose, outMessage} = props;
+    const {values, isChange, handleClose, outMessage} = props;
     const [sValues, setSValues] = useState(values);
     const [error, setError] = useState({});
     const [message, setMessage] = useState({});
-
-    useEffect(()=>{
-
-    }, []);
-
+    const [isLoading, setIsLoading] = useState(false);
+    const averageEvaluation = useState((sValues.averageEvaluation+"").substring(0,4));
 
     //handlers
     const handleChange = (event) => {
@@ -65,10 +63,9 @@ export default function FormCadastro(props){
     }
 // Api
     const saveMovie = () => {
-        loadOpen();
-    
+        setIsLoading(true);
         const onSucces = (response) => {
-          loadClose();
+          setIsLoading(false);
           handleClose();
           const messageA = `Filme ${(isChange)? 'editado': 'salvo'} com sucesso!`;
           outMessage(
@@ -81,9 +78,9 @@ export default function FormCadastro(props){
         }
     
         const onError = (error) => {
+          setIsLoading(false);
           console.error(error);
           //console.log(JSON.stringify(error))
-          loadClose();
           const messageA = (error.message === "Request failed with status code 409")? 
                             'Existe outro livro com o mesmo nome cadastrado':
                             `Não foi possível ${(isChange)? 'editar': 'salvar'} o filme!`;
@@ -151,6 +148,7 @@ export default function FormCadastro(props){
     }
 
     return (
+        <div>
             <form>
                 <Grid container spacing={1}>
                         <Grid item xs={12} sm={4} >
@@ -184,7 +182,7 @@ export default function FormCadastro(props){
                                 name='genre'
                                 inputProps={{id: 'genre-id'}}
                             >
-                                <option value={'n'}>Selecione</option>
+                                <option defaultValue value={'n'}>Selecione</option>
                                 <option value={'Romance'}>Romance</option>
                                 <option value={'Aventura'}>Aventura</option>
                                 <option value={'Ficção Científica'}>Ficção científica</option>
@@ -222,6 +220,18 @@ export default function FormCadastro(props){
                         <Grid item xs={12} sm={4}/>
                         <Grid item xs={12} sm={8}> {(error.producer)?(<p className={classes.error}>{error.producer}</p>):null} </Grid>                        
                         
+                        {(sValues.id !== undefined && sValues.id > 0) ? (
+                        <Grid item xs={12} >
+                            <Grid container spacing={0}>
+                                <Grid item xs={12} >
+                                    <InputLabel htmlFor = 'synopsis-id' >
+                                        Média de avaliações (0-5):
+                                    </InputLabel>
+                                </Grid>
+                                <Grid item xs={12} > {averageEvaluation} </Grid>
+                            </Grid>
+                        </Grid>) : null}
+
                         <Grid item xs={12} >
                             <InputLabel htmlFor = 'synopsis-id' >
                                 Sinopse*:
@@ -240,6 +250,8 @@ export default function FormCadastro(props){
                         </Grid>
                 </Grid>
             </form>
+            <Loading open={isLoading}/>
+        </div>
     );
 }
 
@@ -253,15 +265,14 @@ FormCadastro.defaultProps = {
         cast: '',
         synopsis: '',
         releaseYear: '',
-        producer: ''
+        producer: '',
+        averageEvaluation: 0.0
     }
 };
 
 FormCadastro.propTypes = {
     isChange: PropTypes.bool,
     values: PropTypes.object,
-    loadOpen: PropTypes.func,
-    loadClose: PropTypes.func,
     handleClose: PropTypes.func,
     outMessage: PropTypes.func
 };

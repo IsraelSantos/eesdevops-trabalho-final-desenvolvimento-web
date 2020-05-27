@@ -21,6 +21,7 @@ import MyModal from './MyModal';
 import { Grid, Button } from '@material-ui/core';
 import FormMovie from './FormMovie';
 import MyDialog from './MyDialog';
+import FormToEvaluateMovie from './FormToEvaluateMovie';
 
 const useStyles = makeStyles((theme) => ({
     title: {
@@ -29,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
     button: {
         background: '#00f',
         color: '#fff'
+    },
+    evaluateButton: {
+        color: '#ffb400'
     },
     grid: {
         width: '80%',
@@ -67,7 +71,7 @@ const columns = [
     label: 'Média\u00a0de\u00a0avaliações', 
     minWidth: 170,
     align: 'right',
-    format: (value) => value.toFixed(2)},
+    format: (value) => (value+"").substring(0,4)},// toFixed vive dando problema
 
   { key: 'releaseYear', 
     label: 'Ano\u00a0de\u00a0lançamento', 
@@ -105,6 +109,7 @@ export default function MovieTable(props){
     const [isOpenModalChangeMovie, setIsOpenModalChangeMovie] = useState(false);
     const [selectedValue, setSelectedValue] = useState({});
     const [isDialogDeleteOpen, setIsDialogDeleteOpen] = useState(false);
+    const [isOpenModalToEvaluateMovie, setIsOpenModalToEvaluateMovie] = useState(false);
 
     const clearMessage = () => {
         setMessage(
@@ -158,6 +163,11 @@ export default function MovieTable(props){
           reloadMovies();
           setIsLoading(false);
           setIsDialogDeleteOpen(false);
+          setMessage({ 
+            show: true,
+            type: 'success',
+            value: 'Filme apagado com sucesso!'
+          });
         }
     
         const onError = (error) => {
@@ -174,14 +184,6 @@ export default function MovieTable(props){
         movieApi.deleteMovie(selectedValue.id, onSucces, onError);
     };
 //behavior
-
-    const loadOpen = () => {
-        setIsLoading(true);
-    }
-
-    const loadClose = () => {
-        setIsLoading(false);
-    }
 
     const dialogDeleteOpen = (value) => {
         setSelectedValue(value);
@@ -209,13 +211,17 @@ export default function MovieTable(props){
         listMovies(0, rowsPerPage);
     }
 
+    const reloadMoviesFixPage = (event) => {
+        listMovies(page, rowsPerPage);
+    }
+
     const openModalNewMovie = () => {
         setIsOpenModalNewMovie(true);
     }
 
     const closeModalNewMovie = () => {
         setIsOpenModalNewMovie(false);
-        reloadMovies();
+        reloadMoviesFixPage();
     }
 
     const openModalChangeMovie = (value) => {
@@ -225,7 +231,17 @@ export default function MovieTable(props){
 
     const closeModalChangeMovie = () => {
         setIsOpenModalChangeMovie(false);
-        reloadMovies();
+        reloadMoviesFixPage();
+    }
+
+    const openModalToEvaluateMovie = (value) => {
+        setSelectedValue(value);
+        setIsOpenModalToEvaluateMovie(true);
+    }
+
+    const closeModalToEvaluateMovie = () => {
+        setIsOpenModalToEvaluateMovie(false);
+        reloadMoviesFixPage();
     }
 
     return (
@@ -272,14 +288,14 @@ export default function MovieTable(props){
                                                     (<div className = {classes.controle}>
                                                         <IconButton title='Editar' aria-label="Editar" onClick = {()=>{openModalChangeMovie(row)}}> <CreateIcon color='primary' /> </IconButton>  
                                                         <IconButton title='Excluir' aria-label="Excluir" onClick = {()=>{dialogDeleteOpen(row)}}> <Delete color='secondary' /> </IconButton> 
-                                                        <IconButton title='Avaliar' aria-label="Avaliar"> <StarIcon color='inherit' /> </IconButton>
+                                                        <IconButton title='Avaliar' aria-label="Avaliar" onClick = {()=>{openModalToEvaluateMovie(row)}}> <StarIcon className={classes.evaluateButton} /> </IconButton>
                                                     </div>)
                                                     :(
                                                     (column.key === 'averageEvaluation')?  
                                                     (<div title={column.format(value)}>
                                                         <Rating
                                                                 value={value}
-                                                                precision={0.5}
+                                                                precision={0.2}
                                                                 readOnly={true}
                                                             />
                                                     </div>):null
@@ -307,30 +323,24 @@ export default function MovieTable(props){
                         </Paper>
                 </Grid>
             </Grid>
-            <MyModal 
+            <MyModal
                 title='Cadastro de filme'
                 open={isOpenModalNewMovie} 
                 handleClose = {closeModalNewMovie} 
                 form={<FormMovie 
-                        loadOpen={loadOpen} 
-                        loadClose={loadClose} 
-                        setMessage={setMessage} 
                         handleClose={closeModalNewMovie}
-                        outMessage={setMessage}>
-                    </FormMovie>} />
+                        outMessage={setMessage}></FormMovie>}>
+            </MyModal>
             <MyModal
                 title="Edição de filme"
                 open={isOpenModalChangeMovie} 
                 handleClose = {closeModalChangeMovie} 
                 form={<FormMovie 
                         isChange={true}
-                        loadOpen={loadOpen} 
-                        loadClose={loadClose} 
-                        setMessage={setMessage} 
                         handleClose = {closeModalChangeMovie}
                         outMessage={setMessage}
-                        values = {selectedValue}>
-                    </FormMovie>} />
+                        values = {selectedValue}></FormMovie>}>
+            </MyModal>
             <MyDialog
                 open={isDialogDeleteOpen}
                 title={`Você deseja apagar o filme ${selectedValue.name}?`}
@@ -338,8 +348,18 @@ export default function MovieTable(props){
                 messageAgree="Sim"
                 messageDisagree="Não"
                 handleClose={dialogDeleteClose}
-                handleAgree={deleteMovie} />
-            <Loading open={isLoading}/>
+                handleAgree={deleteMovie} >
+            </MyDialog>
+            <Loading open={isLoading}>
+            </Loading>
+            <MyModal
+                title="Avaliação de filme"
+                open={isOpenModalToEvaluateMovie} 
+                handleClose = {closeModalToEvaluateMovie} 
+                form={<FormToEvaluateMovie values={selectedValue}
+                                            handleClose = {closeModalToEvaluateMovie}
+                                            outMessage={setMessage} ></FormToEvaluateMovie>} >
+            </MyModal>
         </div>
     );
 }

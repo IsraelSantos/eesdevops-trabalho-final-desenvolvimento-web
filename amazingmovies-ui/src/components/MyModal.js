@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
             >
             <Paper className = {classes.paper}>
                 <Grid container >
-                    <Grid item xs={12} sm={10}><h3>{title}</h3></Grid>
+                    <Grid item xs={12} sm={10}><h2>{title}</h2></Grid>
                     <Grid item xs={12} sm={2}> 
                             <IconButton 
                                 aria-label="Close Modal"
