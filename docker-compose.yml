@@ -1,23 +1,35 @@
 version: '3'
 services:
-#  db:
-#    image: postgres
-#    restart: always
-#    container_name: my-postgres
-#    ports:
-#      - 5432:5432
-#    environment:
-#      POSTGRES_PASSWORD: postgres
+  mypostgresmovies:
+    image: postgres
+    restart: always
+    container_name: mypostgresmovies
+    networks:
+        amazingmovies:
+          ipv4_address: 173.20.128.3
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: amazingmovies
   amazingmovies-api:
-#    depends_on:
-#      - my-postgres
+    depends_on:
+      - mypostgresmovies
     build: 
       context: ./amazingmovies-api
       dockerfile: Dockerfile
     container_name: amazingmovies-api
+    networks:
+       amazingmovies:
+        ipv4_address: 173.20.128.2
     restart: always
-#    links:
-#      - my-postgres
+    links:
+      - mypostgresmovies
     restart: always
     ports:
       - 8081:8081
+
+networks:
+  amazingmovies:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 173.20.0.0/16
