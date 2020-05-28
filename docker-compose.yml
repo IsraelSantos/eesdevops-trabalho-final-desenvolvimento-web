@@ -26,6 +26,19 @@ services:
     restart: always
     ports:
       - 8081:8081
+  amazingmovies-ui:
+    depends_on:
+      - amazingmovies-api
+    container_name: amazingmovies-ui
+    build:
+      context: ./amazingmovies-ui
+      dockerfile: Dockerfile
+    networks:
+      amazingmovies:
+        ipv4_address: 173.20.128.4
+    restart: always
+    ports:
+      - 80:80
 
 networks:
   amazingmovies:
